@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users/1
@@ -31,7 +32,26 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def create_session
+    @user = User.find_by email: params[:email]
+
+    if @user && @user.authenticate(params[:password])
+      render json: response_obj(@user), status: :ok
+    else
+      render json: {message: 'Invalid email/password'}, status: :unauthorized
+    end
+  end
+
   private
+
+def response_obj(user)
+    { 
+      # auth_token: JWT.encode({user_id: user.id}),
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name
+    }
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
