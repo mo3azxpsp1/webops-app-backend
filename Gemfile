@@ -21,6 +21,8 @@ gem 'bcrypt', '~> 3.1.7'
 # using json web token in authentication
 gem 'jwt'
 
+# gem 'json_web_token'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

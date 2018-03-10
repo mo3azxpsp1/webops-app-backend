@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :users, except: :create
-  resources :comments
+  resources :comments, only: :create
   resources :posts
 
   post 'signup', to: 'users#create', defaults: {format: :json}

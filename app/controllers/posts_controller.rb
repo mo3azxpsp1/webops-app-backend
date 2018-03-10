@@ -4,14 +4,11 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
-
-    render json: @posts
+    @posts = Post.all.reverse
   end
 
   # GET /posts/1
   def show
-    render json: @post
   end
 
   # POST /posts
@@ -27,16 +24,20 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
-      render json: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
+    if @current_user == @post.user 
+      if @post.update(post_params)
+        render json: @post
+      else
+        render json: @post.errors, status: :unprocessable_entity
+      end
     end
   end
 
   # DELETE /posts/1
   def destroy
-    @post.destroy
+    if @current_user == @post.user
+      @post.destroy
+    end  
   end
 
   private
@@ -47,6 +48,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:body)
+      params.require(:post).permit(:body, :user_id)
     end
 end

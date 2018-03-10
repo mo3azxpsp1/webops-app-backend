@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::API
-  # require 'json_web_token'
-  # require 'jwt'
+  require 'json_web_token'
 
   def authenticate_request!
     if !current_user.present?

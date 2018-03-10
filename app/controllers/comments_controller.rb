@@ -1,25 +1,15 @@
 class CommentsController < ApplicationController
   before_action :authenticate_request!, :current_user
-  before_action :set_post, only: [:index, :create]
+  before_action :set_post, only: [:create]
   before_action :set_comment, only: [:show, :update, :destroy]
 
-  # GET /comments
-  def index
-    @comments = @post.comments
-
-    render json: @comments, status: :ok
-  end
-
-  # GET /comments/1
-  def show
-  end
 
   # POST /comments
   def create
-    @comment = @post.comments.new(comment_params)
+    @comment = @current_user.comments.new(comment_params)
 
     if @comment.save
-      render json: @comment, status: :created, location: @comment
+      render json: @comment, status: :created, location: @post
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
@@ -51,6 +41,6 @@ class CommentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:body)
+      params.require(:comment).permit(:body, :user_id, :post_id)
     end
 end

@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users/1
@@ -46,10 +45,12 @@ class UsersController < ApplicationController
 
 def response_obj(user)
     { 
-      # auth_token: JWT.encode({user_id: user.id}),
+      auth_token: JsonWebToken.encode({user_id: user.id}),
       email: user.email,
       first_name: user.first_name,
-      last_name: user.last_name
+      last_name: user.last_name,
+      name: user.name,
+      id: user.id
     }
   end
     # Use callbacks to share common setup or constraints between actions.
